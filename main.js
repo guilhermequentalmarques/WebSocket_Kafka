@@ -15,13 +15,7 @@ function conectarWebSocket() {
   socket.onmessage = (event) => {
     const data = event.data;
     console.log("Mensagem do servidor:", data);
-
-    if (data.startsWith("users:")) {
-      const usuarios = data.substring(6).split(",");
-      exibirUsuarios(usuarios);
-    } else {
-      exibirMensagemNormal(data);
-    }
+    exibirMensagem(data);
   };
 
   socket.onclose = () => {
@@ -34,9 +28,9 @@ function conectarWebSocket() {
   };
 }
 
-function enviarNomeUsuario(event) {
-  event.preventDefault(); 
+function enviarNomeUsuario() {
   const nomeUsuario = document.getElementById('nomeUsuario').value.trim();
+  
   if (nomeUsuario) {
     socket.send(nomeUsuario);
     console.log("Nome de usuário enviado:", nomeUsuario);
@@ -46,11 +40,12 @@ function enviarNomeUsuario(event) {
 }
 
 function enviarMensagem(event) {
-  event.preventDefault(); 
+  console.log("Mensagem enviada");
+  event.preventDefault();
   const message = document.getElementById('message').value.trim();
   
   if (message !== '') {
-    socket.send(message); 
+    socket.send(message);
     console.log("Mensagem enviada:", message);
     document.getElementById('message').value = '';
   } else {
@@ -58,22 +53,16 @@ function enviarMensagem(event) {
   }
 }
 
-
-function exibirUsuarios(usuarios) {
-  const userList = document.getElementById("user-list");
-  userList.innerHTML = "";
-  usuarios.forEach(user => {
-    const li = document.createElement("li");
-    li.textContent = user;
-    userList.appendChild(li);
-  });
-}
-
-function exibirMensagemNormal(message) {
+function exibirMensagem(mensagem) {
   const messagesDiv = document.getElementById("messages");
   const newMessage = document.createElement("p");
-  newMessage.textContent = message;
+  newMessage.textContent = mensagem;
   messagesDiv.appendChild(newMessage);
 }
 
 conectarWebSocket();
+
+document.getElementById('enviarNomeBtn').addEventListener('click', enviarNomeUsuario);
+document.getElementById('enviarMensagemBtn').addEventListener('click', (event) => {
+  enviarMensagem(event);
+});

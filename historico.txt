@@ -48,3 +48,24 @@ tchau: lav
 lav: oi
 Daniel: Daniel
 oii: oii
+oii: G
+oii: oii
+msg:Gui: msg:Gui
+msg:Gui: msg:oi
+oii: tudo bem?
+Gui: oii
+gui: oii
+Oii: tudo bem?
+Gui: tudo bem?
+Guilherme: tudo bem?
+Gui: oi
+Guii: Guii
+Gui: oii
+Guilherme1: Guilherme1
+Guilherme1: testando se nn vai recarregar
+Guilherme1: oii
+Guilherme: oii
+oii: oii
+oii: tudo bem?
+Guilherme1: oii
+Guilherme1: oii

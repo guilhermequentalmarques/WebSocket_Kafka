@@ -1,35 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat WebSocket</title>
   <style>
-    #messages { height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 5px; }
-    #user-list { list-style-type: none; padding: 0; }
+    #messages { max-height: 300px; overflow-y: scroll; }
+    #message { width: 300px; height: 60px; }
+    #nomeUsuario { width: 200px; }
   </style>
 </head>
 <body>
-  <h1>Chat WebSocket</h1>
-  
-  <div>
-    <form onsubmit="enviarNomeUsuario(event)">
-      <input type="text" id="nomeUsuario" placeholder="Digite seu nome de usuário" />
-      <button type="submit">Entrar</button>
-    </form>
-  </div>
-
-  <div>
-    <ul id="user-list"></ul>
-  </div>
-
+  <h2>Chat WebSocket</h2>
   <div id="messages"></div>
-
-  <form onsubmit="enviarMensagem(event)">
-    <input type="text" id="message" placeholder="Digite uma mensagem..." oninput="digitar()">
-    <button type="submit">Enviar</button>
-  </form>
   
+  <input id="nomeUsuario" type="text" placeholder="Digite seu nome de usuário" />
+  <button id="enviarNomeBtn">Enviar Nome</button>
+  
+  <textarea id="message" placeholder="Digite uma mensagem..."></textarea>
+  <button id="enviarMensagemBtn" type="button">Enviar Mensagem</button>
+  
+  <div>
+    <h3>Usuários conectados:</h3>
+    <ul id="userList"></ul>
+  </div>
 
   <script src="main.js"></script>
 </body>

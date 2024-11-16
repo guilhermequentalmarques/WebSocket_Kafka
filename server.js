@@ -4,14 +4,16 @@ const path = require('path');
 const { Kafka, Partitioners } = require('kafkajs');
 
 const server = new WebSocket.Server({ port: 8081 });
-const clientes = new Map(); 
+const clientes = new Map();
 const historico = path.join(__dirname, 'historico.txt');
 
 function carregarHistorico() {
   if (fs.existsSync(historico)) {
-    return fs.readFileSync(historico, 'utf-8').split('\n').filter(line => line.trim());
+    return fs.readFileSync(his, 'utf-8')
+      .split('\n')
+      .filter(line => line.trim());
   }
-  return [];
+  return []
 }
 
 function salvarHistorico(mensagem) {
@@ -63,26 +65,29 @@ server.on('connection', (ws) => {
 
   const mensagensHistoricas = carregarHistorico();
   ws.send("Histórico de mensagens: \n" + mensagensHistoricas.join('\n'));
-  ws.send('Envie seu nome de usuário:');
+
+  let nomeUsuarioDefinido = false;
 
   ws.on('message', (message) => {
     const mensagem = message.toString().trim();
 
-    if (!Array.from(clientes.values()).some(client => client.ws === ws)) {
+    if (!nomeUsuarioDefinido) {
       if (clientes.has(mensagem)) {
-        console.log(`Reconectando cliente: ${mensagem}`);
-        const usuario = clientes.get(mensagem);
-        if (usuario.ws.readyState !== WebSocket.OPEN) {
-          usuario.ws = ws;
-          usuario.status = 'conectado';
-          ws.send(`Bem-vindo de volta, ${mensagem}!`);
-        }
-      } else {
-        console.log(`Novo usuário: ${mensagem}`);
-        clientes.set(mensagem, { ws, status: 'conectado' });
-        enviarMensagemParaTodos(`${mensagem} entrou no chat!`, ws);
+        ws.send('Nome de usuário já está em uso, tente outro.');
+        return;
       }
-    } else if (mensagem.startsWith('/private')) {
+
+      clientes.set(mensagem, { ws, status: 'conectado' });
+      nomeUsuarioDefinido = true;
+
+      ws.send(`Bem-vindo, ${mensagem}! Você entrou no chat.`);
+      
+      enviarMensagemParaTodos(`${mensagem} entrou no chat!`, ws);
+      console.log(`Novo usuário: ${mensagem}`);
+      return;
+    }
+
+    if (mensagem.startsWith('/private')) {
       const [_, username, ...privateMessage] = mensagem.split(' ');
       const usuarioAlvo = clientes.get(username);
       if (usuarioAlvo && usuarioAlvo.ws.readyState === WebSocket.OPEN) {
