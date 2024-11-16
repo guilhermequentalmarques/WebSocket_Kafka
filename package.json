@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "kafkajs": "^2.2.4",
+    "websocket-kafka": "file:",
+    "ws": "^8.18.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "websocket-kafka",
+  "version": "1.0.0",
+  "main": "main.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
